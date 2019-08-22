@@ -227,9 +227,10 @@ public class CommandMod extends Command {
         GUILD_WHITELIST.add("211786369951989762"); // SciCraft
         GUILD_WHITELIST.add("169373832510046208"); // ProtoTech
         GUILD_WHITELIST.add("403047405877985281"); // TechRock
-        GUILD_WHITELIST.add("320752694715219971"); // Bismuth
         GUILD_WHITELIST.add("511912185388204034"); // TIS Trinity Union
         GUILD_WHITELIST.add("429700535206281217"); // PulseFiction
+        GUILD_WHITELIST.add("309499810166210588"); // EigenCraft
+        GUILD_WHITELIST.add("279782390958784512"); // FrostCraft
         if (!GUILD_WHITELIST.contains(message.getGuild().getId())) {
             message.getChannel().sendMessage("This server is not on the whitelist to use this command. Contact a Monkey bot dev if you think this is an error.").queue();
             return;
