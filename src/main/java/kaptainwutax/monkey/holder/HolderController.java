@@ -20,7 +20,8 @@ public class HolderController {
             "user tried to outrun a train, the train won.",
             "user disappeared from the universe.",
             "user died from a creeper explosion.",
-            "user disrespected the tall kaktoos."
+            "user disrespected the tall kaktoos.",
+            "user tried to divide by divide by diamond."
     };
 
     private static final String[] YUN_DEFENSE_TRIGGERS = {"im ", "i'm ", "i am ", "i’m ", "i‘m ", "i`m "};
