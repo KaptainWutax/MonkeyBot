@@ -9,9 +9,10 @@ public class CommandSay {
 
     public static void register(CommandDispatcher<MessageCommandSource> dispatcher) {
         dispatcher.register(literal("say", "Make me say something nice.")
-            .requires(MessageCommandSource::canUseFunCommands)
-            .then(argument("message", greedyString())
-                .executes(ctx -> say(ctx.getSource(), getString(ctx, "message")))));
+                .requires(MessageCommandSource::canUseFunCommands)
+                .requires(MessageCommandSource::canUseSayCommand)
+                .then(argument("message", greedyString())
+                        .executes(ctx -> say(ctx.getSource(), getString(ctx, "message")))));
     }
 
     private static int say(MessageCommandSource source, String message) {

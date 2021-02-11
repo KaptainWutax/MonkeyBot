@@ -77,7 +77,8 @@ public class MessageCommandSource {
             return false;
         Member member = getMember();
         assert member != null;
-        return member.hasPermission(Permission.ADMINISTRATOR);
+        boolean b=member.hasPermission(Permission.ADMINISTRATOR);
+        return b;
     }
 
     /**
@@ -90,6 +91,15 @@ public class MessageCommandSource {
         assert guild != null;
         HolderGuild holder = Guilds.instance().getOrCreateServer(new HolderGuild(guild));
         return holder.controller.funCommands;
+    }
+
+    public boolean canUseSayCommand(){
+        if (isDMs() || isAdministrator())
+            return true;
+        Guild guild = getGuild();
+        assert guild != null;
+        HolderGuild holder = Guilds.instance().getOrCreateServer(new HolderGuild(guild));
+        return holder.controller.sayCommand;
     }
 
     /**

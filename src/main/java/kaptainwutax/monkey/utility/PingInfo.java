@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class PingInfo {
 
-    private Map<SpamInfoKey, UserPingInfo> userSpamInfos = new HashMap<>();
+    private final Map<SpamInfoKey, UserPingInfo> userSpamInfos = new HashMap<>();
 
     public UserPingInfo get(String guildId, String userId) {
         return userSpamInfos.computeIfAbsent(new SpamInfoKey(guildId, userId), k -> new UserPingInfo());

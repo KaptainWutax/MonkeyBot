@@ -10,6 +10,7 @@ import kaptainwutax.monkey.utility.MonkeyConfig;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
@@ -84,10 +86,10 @@ public class MonkeyBot extends ListenerAdapter {
         }).start();
         */
 
-        JDABuilder builder = new JDABuilder(AccountType.BOT);
-        builder.setToken(monkeyBot.config.token);
-        builder.addEventListeners(instance());
-        monkeyBot.jda = builder.build();
+        JDABuilder jdaBuilder=JDABuilder.createLight(monkeyBot.config.token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                .addEventListeners(instance())
+                .setActivity(Activity.playing("monkey say monkey"));
+        monkeyBot.jda=jdaBuilder.build();
         monkeyBot.dispatcher = new CommandDispatcher<>();
         Commands.registerCommands(monkeyBot.dispatcher);
         monkeyBot.dispatcher.findAmbiguities(((parent, child, sibling, inputs) ->

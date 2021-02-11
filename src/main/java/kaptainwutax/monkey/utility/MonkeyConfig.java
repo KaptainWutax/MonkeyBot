@@ -23,7 +23,7 @@ public class MonkeyConfig {
     /**
      * A list of users SORTED BY ID
      */
-    @Expose private List<UserInfo> users = new ArrayList<>();
+    @Expose private final List<UserInfo> users = new ArrayList<>();
 
     // Debugging features
     @Expose public String[] commandPrefix = {"monkey", "\uD83D\uDC12"};

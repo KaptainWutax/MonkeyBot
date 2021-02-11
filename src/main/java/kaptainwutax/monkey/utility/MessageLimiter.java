@@ -27,9 +27,7 @@ public class MessageLimiter {
         if(limiter.everyone >= 0 && this.everyone > limiter.everyone)return false;
         else if(limiter.here >= 0 && this.here > limiter.here)return false;
         else if(limiter.role >= 0 && this.role > limiter.role)return false;
-        else if(limiter.user >= 0 && this.user > limiter.user)return false;
-
-        return true;
+        else return limiter.user < 0 || this.user <= limiter.user;
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Commands {
 
-    private static Map<LiteralCommandNode<MessageCommandSource>, String> COMMAND_HELP = new IdentityHashMap<>();
+    private static final Map<LiteralCommandNode<MessageCommandSource>, String> COMMAND_HELP = new IdentityHashMap<>();
 
     public static void registerCommands(CommandDispatcher<MessageCommandSource> dispatcher) {
         COMMAND_HELP.clear();

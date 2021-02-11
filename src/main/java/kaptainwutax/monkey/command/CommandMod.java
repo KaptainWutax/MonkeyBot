@@ -36,70 +36,74 @@ public class CommandMod {
 
     public static void register(CommandDispatcher<MessageCommandSource> dispatcher) {
         dispatcher.register(literal("mod", "Moderation tools for Monkey Bot.")
-            .requires(MessageCommandSource::isAdministrator)
-            .then(literal("setChannel", "Sets the moderation channel. Will be used to print logs.")
-                .then(argument("channel", channel())
-                    .executes(ctx -> setChannel(ctx.getSource(), getChannel(ctx, "channel")))))
-            .then(literal("autoban", "Should the user be automatically banned if he spams? Note that you will always be notified in the moderation channel if a user spams.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("value", bool())
-                    .executes(ctx -> setAutoban(ctx.getSource(), getBool(ctx, "value")))))
-            .then(literal("banMessage", "If on, this will print a custom ban message in the target channel whenever someone gets banned from spamming.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("value", bool())
-                    .executes(ctx -> setBanMessage(ctx.getSource(), getBool(ctx, "value")))))
-            .then(literal("sendAlert", "If on, spam alerts will be sent to and from other discords.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("value", bool())
-                    .executes(ctx -> setSendAlert(ctx.getSource(), getBool(ctx, "value")))))
-            .then(literal("funCommands", "If on, general fun commands will be enabled. Note that some of them are trollish and may cause issues.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("value", bool())
-                    .executes(ctx -> setFunCommands(ctx.getSource(), getBool(ctx, "value")))))
-            .then(literal("limit", "Sets the limit of everyone, here, role and user pings for users with the specified role. If the role is unspecified, this applies to users without a role.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("everyoneLimit", integer(-1))
-                    .then(argument("hereLimit", integer(-1))
-                        .then(argument("roleLimit", integer(-1))
-                            .then(argument("userLimit", integer(-1))
-                                .executes(ctx -> setLimits(ctx.getSource(), null, getInteger(ctx, "everyoneLimit"), getInteger(ctx, "hereLimit"), getInteger(ctx, "roleLimit"), getInteger(ctx, "userLimit")))
-                                .then(argument("role", role())
-                                    .executes(ctx -> setLimits(ctx.getSource(), getRole(ctx, "role"), getInteger(ctx, "everyoneLimit"), getInteger(ctx, "hereLimit"), getInteger(ctx, "roleLimit"), getInteger(ctx, "userLimit")))))))))
-            .then(literal("yunDefense", "If on, I'm jokes will be made against Yun. BRING HIM DOWN!")
-                .requires(CommandMod::hasModerationChannel)
-                .then(argument("value", bool())
-                    .executes(ctx -> setYunDefense(ctx.getSource(), getBool(ctx, "value")))))
-            .then(literal("unautoban", "Reverse a Monkey autoban. Can only unban users banned via a Monkey autoban.")
-                .requires(source -> MonkeyBot.instance().config.botAdmins.contains(source.getUser().getId()))
-                .then(argument("userId", longArg())
-                    .executes(ctx -> unautoban(ctx.getSource(), getLong(ctx, "userId"), null))
-                    .then(argument("reason", greedyString())
-                        .executes(ctx -> unautoban(ctx.getSource(), getLong(ctx, "userId"), getString(ctx, "reason"))))))
-            .then(literal("mute", "Commands to handle the mute role.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(literal("setRole", "Sets the mute role to an existing role on the server.")
-                    .then(argument("value", role())
-                        .executes(ctx -> setMuteRole(ctx.getSource(), getRole(ctx, "value")))))
-                .then(literal("unsetRole", "Sets the server to have no mute role (or at least, none Monkey knows about).")
-                    .executes(ctx -> unsetMuteRole(ctx.getSource())))
-                .then(literal("automanage", "Sets whether Monkey should auto-manage the mute role.")
-                    .then(argument("value", bool())
-                        .executes(ctx -> setAutomanageMuteRole(ctx.getSource(), getBool(ctx, "value")))))
-                .then(literal("setupRole", "Creates a mute role and sets it up to do its job. The mute role will be auto-managed unless configured otherwise.")
-                    .executes(ctx -> setupMuteRole(ctx.getSource()))))
-            .then(literal("globalPunish", "Manually globally punish a user. The user will be banned on the discord you run the command, and given a mute role on all discords which support it, subject to the following conditions:\n1. There is an admin of that discord which is also in the discord you run the command.\n2. The discord in which you run the command is not on that discord's blacklist.\n3. That discord has a moderation channel.\nYour name and guild will be broadcast to all affected guilds.")
-                .then(argument("victim", user())
-                    .executes(ctx -> globalPunish(ctx.getSource(), getUser(ctx, "victim"), null))
-                    .then(argument("reason", greedyString())
-                        .executes(ctx -> globalPunish(ctx.getSource(), getUser(ctx, "victim"), getString(ctx, "reason"))))))
-            .then(literal("serverBlacklist", "Commands to manage the server blacklist, which restricts global punishments from the discords on the blacklist from affecting your discord.")
-                .requires(CommandMod::hasModerationChannel)
-                .then(literal("add", "Adds a server to your server blacklist.")
-                    .then(argument("guild", greedyGuild())
-                        .executes(ctx -> addServerToBlacklist(ctx.getSource(), getGuild(ctx, "guild")))))
-                .then(literal("remove", "Removes a server from your server blacklist.")
-                    .then(argument("guild", greedyGuild())
-                        .executes(ctx -> removeServerFromBlacklist(ctx.getSource(), getGuild(ctx, "guild")))))));
+                .requires(MessageCommandSource::isAdministrator)
+                .then(literal("setChannel", "Sets the moderation channel. Will be used to print logs.")
+                        .then(argument("channel", channel())
+                                .executes(ctx -> setChannel(ctx.getSource(), getChannel(ctx, "channel")))))
+                .then(literal("autoban", "Should the user be automatically banned if he spams? Note that you will always be notified in the moderation channel if a user spams.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setAutoban(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("banMessage", "If on, this will print a custom ban message in the target channel whenever someone gets banned from spamming.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setBanMessage(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("sendAlert", "If on, spam alerts will be sent to and from other discords.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setSendAlert(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("funCommands", "If on, general fun commands will be enabled. Note that some of them are trollish and may cause issues.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setFunCommands(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("disableSay", "By default the say command is on but if you don't like it, just disable it with that setting.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setSayCommand(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("limit", "Sets the limit of everyone, here, role and user pings for users with the specified role. If the role is unspecified, this applies to users without a role.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("everyoneLimit", integer(-1))
+                                .then(argument("hereLimit", integer(-1))
+                                        .then(argument("roleLimit", integer(-1))
+                                                .then(argument("userLimit", integer(-1))
+                                                        .executes(ctx -> setLimits(ctx.getSource(), null, getInteger(ctx, "everyoneLimit"), getInteger(ctx, "hereLimit"), getInteger(ctx, "roleLimit"), getInteger(ctx, "userLimit")))
+                                                        .then(argument("role", role())
+                                                                .executes(ctx -> setLimits(ctx.getSource(), getRole(ctx, "role"), getInteger(ctx, "everyoneLimit"), getInteger(ctx, "hereLimit"), getInteger(ctx, "roleLimit"), getInteger(ctx, "userLimit")))))))))
+                .then(literal("yunDefense", "If on, I'm jokes will be made against Yun. BRING HIM DOWN!")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(argument("value", bool())
+                                .executes(ctx -> setYunDefense(ctx.getSource(), getBool(ctx, "value")))))
+                .then(literal("unautoban", "Reverse a Monkey autoban. Can only unban users banned via a Monkey autoban.")
+                        .requires(source -> MonkeyBot.instance().config.botAdmins.contains(source.getUser().getId()))
+                        .then(argument("userId", longArg())
+                                .executes(ctx -> unautoban(ctx.getSource(), getLong(ctx, "userId"), null))
+                                .then(argument("reason", greedyString())
+                                        .executes(ctx -> unautoban(ctx.getSource(), getLong(ctx, "userId"), getString(ctx, "reason"))))))
+                .then(literal("mute", "Commands to handle the mute role.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(literal("setRole", "Sets the mute role to an existing role on the server.")
+                                .then(argument("value", role())
+                                        .executes(ctx -> setMuteRole(ctx.getSource(), getRole(ctx, "value")))))
+                        .then(literal("unsetRole", "Sets the server to have no mute role (or at least, none Monkey knows about).")
+                                .executes(ctx -> unsetMuteRole(ctx.getSource())))
+                        .then(literal("automanage", "Sets whether Monkey should auto-manage the mute role.")
+                                .then(argument("value", bool())
+                                        .executes(ctx -> setAutomanageMuteRole(ctx.getSource(), getBool(ctx, "value")))))
+                        .then(literal("setupRole", "Creates a mute role and sets it up to do its job. The mute role will be auto-managed unless configured otherwise.")
+                                .executes(ctx -> setupMuteRole(ctx.getSource()))))
+                .then(literal("globalPunish", "Manually globally punish a user. The user will be banned on the discord you run the command, and given a mute role on all discords which support it, subject to the following conditions:\n1. There is an admin of that discord which is also in the discord you run the command.\n2. The discord in which you run the command is not on that discord's blacklist.\n3. That discord has a moderation channel.\nYour name and guild will be broadcast to all affected guilds.")
+                        .then(argument("victim", user())
+                                .executes(ctx -> globalPunish(ctx.getSource(), getUser(ctx, "victim"), null))
+                                .then(argument("reason", greedyString())
+                                        .executes(ctx -> globalPunish(ctx.getSource(), getUser(ctx, "victim"), getString(ctx, "reason"))))))
+                .then(literal("serverBlacklist", "Commands to manage the server blacklist, which restricts global punishments from the discords on the blacklist from affecting your discord.")
+                        .requires(CommandMod::hasModerationChannel)
+                        .then(literal("add", "Adds a server to your server blacklist.")
+                                .then(argument("guild", greedyGuild())
+                                        .executes(ctx -> addServerToBlacklist(ctx.getSource(), getGuild(ctx, "guild")))))
+                        .then(literal("remove", "Removes a server from your server blacklist.")
+                                .then(argument("guild", greedyGuild())
+                                        .executes(ctx -> removeServerFromBlacklist(ctx.getSource(), getGuild(ctx, "guild")))))));
     }
 
     private static boolean hasModerationChannel(MessageCommandSource source) {
@@ -185,6 +189,16 @@ public class CommandMod {
         return 0;
     }
 
+    private static int setSayCommand(MessageCommandSource source, boolean value) {
+        assert source.getGuild() != null;
+        HolderGuild server = Guilds.instance().getOrCreateServer(new HolderGuild(source.getGuild()));
+
+        server.controller.sayCommand = !value;
+        sendModerationFeedback(source, value ? "Disabled say command." : "Enabled say command.");
+
+        return 0;
+    }
+
     private static int setLimits(MessageCommandSource source, @Nullable Role role, int everyoneLimit, int hereLimit, int roleLimit, int userLimit) {
         if (!source.checkBotPerms("Ban Members", Permission.BAN_MEMBERS))
             return 0;
@@ -222,7 +236,7 @@ public class CommandMod {
             if (guild == null) continue;
 
             guild.retrieveBanById(user.id).queue(ban -> {
-                guild.getController().unban(ban.getUser()).queue();
+                guild.unban(ban.getUser()).queue();
 
                 if (!hasApologized.getAndSet(true)) {
                     ban.getUser().openPrivateChannel().queue(dms -> {
@@ -300,7 +314,7 @@ public class CommandMod {
 
         sendModerationFeedback(source, "Setting up mute role...");
 
-        source.getGuild().getController().createRole().setName("Muted").setPermissions(Collections.emptyList()).queue(muteRole -> {
+        source.getGuild().createRole().setName("Muted").setPermissions(Collections.emptyList()).queue(muteRole -> {
             server.controller.muteRoleId = muteRole.getId();
             for (GuildChannel channel : source.getGuild().getChannels()) {
                 if (channel.getParent() == null || !channel.getPermissionOverrides().isEmpty())
@@ -334,7 +348,7 @@ public class CommandMod {
             throw CANNOT_PUNISH_BOTS_EXCEPTION.create();
 
         // Ban the user in the discord the command was executed at (no checks needed)
-        source.getGuild().getController().ban(victim, 0, reason).queue();
+        source.getGuild().ban(victim, 0, reason).queue();
 
         for (HolderGuild server : Guilds.instance().servers) {
             if (server.id.equals(source.getGuild().getId())) continue;
@@ -373,7 +387,7 @@ public class CommandMod {
                 if (guild.isMember(victim)) {
                     Member member = guild.getMember(victim);
                     assert member != null;
-                    guild.getController().addSingleRoleToMember(member, muteRole).queue();
+                    guild.addRoleToMember(member, muteRole).queue();
                 } else {
                     if (server.controller.autoManageMuteRole)
                         server.controller.leftMutedMembers.add(victim.getId());

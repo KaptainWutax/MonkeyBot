@@ -1,6 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.0'
     id 'java'
+    id 'application'
 }
 
 jar {
@@ -19,16 +20,19 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-    maven {url 'https://libraries.minecraft.net'}
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://libraries.minecraft.net' }
 }
 
 dependencies {
-    compile 'net.dv8tion:JDA:4.ALPHA.0_82'
-    compile 'com.google.code.gson:gson:2.8.5'
-    compile 'com.mojang:brigadier:1.0.17'
-    shadow 'junit:junit:3.8.2'
+    implementation 'net.dv8tion:JDA:4.2.0_168'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.mojang:brigadier:1.0.17'
+    testImplementation 'junit:junit:3.8.2'
+    implementation 'com.github.KaptainWutax:SeedUtils:master'
 }
 
 shadowJar {
     baseName = 'monkey'
+    mainClassName = 'kaptainwutax.monkey.MonkeyBot'
 }

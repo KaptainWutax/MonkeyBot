@@ -33,6 +33,7 @@ public class HolderController {
     @Expose public boolean banMessage = true;
     @Expose public boolean sendAlert = true;
     @Expose public boolean funCommands = false;
+    @Expose public boolean sayCommand = true;
     @Expose public boolean yunDefense = true;
 
     @Expose private MessageLimiter noobLimit = new MessageLimiter(-1, -1, -1,-1);
@@ -80,7 +81,7 @@ public class HolderController {
         if (autoManageMuteRole && muteRoleId != null && leftMutedMembers.remove(event.getMember().getId())) {
             Role muteRole = event.getGuild().getRoleById(muteRoleId);
             if (muteRole != null) {
-                event.getGuild().getController().addSingleRoleToMember(event.getMember(), muteRole).queue(n -> {
+                event.getGuild().addRoleToMember(event.getMember(), muteRole).queue(n -> {
                     if (moderationChannel != null) {
                         TextChannel moderationChannel = event.getGuild().getTextChannelById(this.moderationChannel);
                         if (moderationChannel != null) {
@@ -179,7 +180,7 @@ public class HolderController {
 
                     if (s.controller.autoban) {
                         Log.print(moderationChannel, "Banned <@" + event.getAuthor().getIdLong() + ">, please double check to make sure it wasn't a mistake.");
-                        s.getGuild().getController().ban(event.getMember(), 0, "Automatic ping ban from " + event.getGuild().getName() + ".").queue(ban -> {
+                        s.getGuild().ban(event.getMember(), 0, "Automatic ping ban from " + event.getGuild().getName() + ".").queue(ban -> {
                             MonkeyBot.instance().config.getOrCreateUser(event.getMember().getIdLong()).autobannedServers.add(s.getGuild().getId());
                         }, t -> {
                         });
@@ -197,7 +198,7 @@ public class HolderController {
         if(!force && !this.autoban)return;
         if(this.banMessage)Log.print(event.getTextChannel(), BAN_MESSAGES[new Random().nextInt(BAN_MESSAGES.length)].replaceFirst("user", "<@" + event.getMember().getId() + ">"));
         Log.print(moderationChannel, "Banned <@" + event.getAuthor().getIdLong() + ">, please double check to make sure it wasn't a mistake.");
-        this.getServer().getGuild().getController().ban(event.getMember(), 0, "Automatic ping ban.").queue(ban -> {
+        this.getServer().getGuild().ban(event.getMember(), 0, "Automatic ping ban.").queue(ban -> {
             MonkeyBot.instance().config.getOrCreateUser(event.getMember().getIdLong()).autobannedServers.add(getServer().getGuild().getId());
         });
     }

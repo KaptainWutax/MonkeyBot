@@ -8,7 +8,7 @@ public class UserPingInfo {
 
     private static final long SPAM_TIMEFRAME = 60L * 1000L * 1000L * 1000L; // one minute
 
-    private LinkedHashMap<String, Long> pingTimeStamps = new LinkedHashMap<>(1);
+    private final LinkedHashMap<String, Long> pingTimeStamps = new LinkedHashMap<>(1);
 
     /**
      * Removes ping entries which are more than a minute old
